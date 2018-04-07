@@ -1,6 +1,6 @@
 package steakhouse
 
-import scala.concurrent.Await
+import scala.concurrent.Future
 
 sealed trait Meal
 
@@ -13,17 +13,16 @@ class Waiter {
   private val bartender: Bartender = new Bartender
 
   import scala.concurrent.ExecutionContext.Implicits.global
-  import scala.concurrent.duration._
 
-  def order(meal: Meal): List[String] = meal match {
+  def order(meal: Meal): Future[List[String]] = meal match {
     case StandardMeal => {
-      val futureSteak = chef.hugeSteak()
-      val mashedPotato = chef.mashedPotato()
-      val beer = bartender.beer()
+      val steakF  = chef.hugeSteak()
+      val potatoF = chef.mashedPotato()
+      val beerF   = bartender.beer()
 
-      val steak = Await.result(futureSteak, 10 seconds)
-
-      List(steak, mashedPotato, beer)
+      Future.sequence(
+        List(steakF, Future.successful(potatoF), beerF)
+      )
     }
   }
 

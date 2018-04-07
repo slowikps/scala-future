@@ -5,13 +5,10 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class Chef {
 
-  def pepperSauce(): String = delay("pepper sauce", 300)
+  def pepperSauce()(implicit ec: ExecutionContext): Future[String] = delay("pepper sauce", 300)
 
-  def mashedPotato(): String = delay("mashed potato")
+  def mashedPotato(): String = "mashed potato"
 
-  def hugeSteak()(implicit ex: ExecutionContext): Future[String] =
-    Future(
-      delay("huge steak", 400)
-    )
+  def hugeSteak()(implicit ec: ExecutionContext): Future[String] = delay("huge steak", 400)
 
 }

@@ -7,7 +7,11 @@ class ChefSpec extends AsyncFlatSpec with Matchers {
   val sut = new Chef
 
   "A chef" should "be able to prepare pepper sauce" in {
-    sut.pepperSauce() should ===("pepper sauce")
+    sut
+      .pepperSauce()
+      .map(
+        _ should ===("pepper sauce")
+      )
   }
 
   "A chef" should "be able to prepare mashed potato" in {
@@ -15,8 +19,10 @@ class ChefSpec extends AsyncFlatSpec with Matchers {
   }
 
   "A chef" should "be able to prepare huge steak" in {
-    sut.hugeSteak().map(
-      _ should ===("huge steak")
-    )
+    sut
+      .hugeSteak()
+      .map(
+        _ should ===("huge steak")
+      )
   }
 }
