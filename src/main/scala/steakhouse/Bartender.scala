@@ -1,17 +1,15 @@
 package steakhouse
 
-import scala.concurrent.{ExecutionContext, Future, Promise}
-import scala.util.{Failure, Success}
+import java.util.concurrent.Executors
+
+import scala.concurrent.duration._
+import scala.concurrent.{Await, ExecutionContext, Future}
 
 class Bartender {
   import Utils._
 
-  def beer()(implicit ec: ExecutionContext): Future[String] = {
-    val p = Promise[String]
-    delay("beer").onComplete {
-      case Success(success) => p.trySuccess(success)
-      case Failure(cause)   => p.tryFailure(cause)
-    }
-    p.future
+  implicit val ec = ExecutionContext.fromExecutor(Executors.newFixedThreadPool(1))
+  def beer(): Future[String] = Future{
+    Await.result(delay("beer"), Duration.Inf)
   }
 }

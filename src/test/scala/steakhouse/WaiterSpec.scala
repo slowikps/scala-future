@@ -8,16 +8,15 @@ class WaiterSpec extends AsyncFlatSpec with Matchers with ScalaFutures {
 
   val sut = new Waiter
 
+  override implicit val patienceConfig = PatienceConfig(timeout = Span(500, Millis), interval = Span(20, Millis))
+
   "A waiter" should "be able to deliver a standard meal" in {
-    sut
-      .order(StandardMeal)
-      .map(
-        _ should ===(List("huge steak", "mashed potato", "beer"))
-      )
+    whenReady(sut.order(StandardMeal)) {
+      _ should ===(List("huge steak", "mashed potato", "beer"))
+    }
   }
 
   "A waiter" should "be able to deliver a standard meal below 0.7 second" in {
-    implicit val patienceConfig = PatienceConfig(timeout = Span(500, Millis), interval = Span(20, Millis))
     Utils.restartTimer()
 
     whenReady(sut.order(StandardMeal)) {
