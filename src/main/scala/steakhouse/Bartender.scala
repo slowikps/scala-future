@@ -8,7 +8,7 @@ import scala.concurrent.{Await, ExecutionContext, Future}
 class Bartender {
   import Utils._
 
-  implicit val ec = ExecutionContext.fromExecutor(Executors.newFixedThreadPool(1))
+  implicit val ec = ExecutionContext.fromExecutor(Executors.newFixedThreadPool(2))
   def beer(): Future[String] = Future{
     Await.result(delay("beer"), Duration.Inf)
   }

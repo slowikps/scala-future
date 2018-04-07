@@ -16,13 +16,15 @@ class Waiter {
 
   def order(meal: Meal): Future[List[String]] = meal match {
     case StandardMeal => {
-      val steakF  = chef.hugeSteak()
-      val potatoF = chef.mashedPotato()
-      val beerF   = bartender.beer()
+      val steakF = chef.hugeSteak()
+      val beerF  = bartender.beer()
 
-      Future.sequence(
-        List(steakF, Future.successful(potatoF), beerF)
-      )
+      for {
+        steak  <- steakF
+        potato = chef.mashedPotato()
+        beer   <- beerF
+      } yield List(steak, potato, beer)
+
     }
   }
 
