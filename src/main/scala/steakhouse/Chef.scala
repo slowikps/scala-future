@@ -1,11 +1,15 @@
 package steakhouse
 import Utils._
 
+import scala.concurrent.{ExecutionContext, Future}
+
 class Chef {
+
   def pepperSauce(): String = delay("pepper sauce", 300)
 
   def mashedPotato(): String = delay("mashed potato")
 
-  def hugeSteak(): String = delay("huge steak", 400)
+  def hugeSteak()(implicit ex: ExecutionContext): Future[String] = ???
+//      delay("huge steak", 400)
 
 }
