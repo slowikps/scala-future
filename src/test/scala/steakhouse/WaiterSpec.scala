@@ -9,11 +9,9 @@ class WaiterSpec extends AsyncFlatSpec with Matchers with ScalaFutures {
   val sut = new Waiter
 
   "A waiter" should "be able to deliver a standard meal" in {
-    sut
-      .order(StandardMeal)
-      .map(
-        _ should ===(List("huge steak", "mashed potato", "beer"))
-      )
+    whenReady(sut.order(StandardMeal)) {
+      _ should ===(List("huge steak", "mashed potato", "beer"))
+    }
   }
 
   "A waiter" should "be able to deliver a standard meal below 0.7 second" in {
